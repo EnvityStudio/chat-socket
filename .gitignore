@@ -1,0 +1,7 @@
+# Node Dependencies
+node_modules
+package-lock.json
+public/node_modules
+public/package-lock.json
+# Logs
+debug.log
