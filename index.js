@@ -32,5 +32,5 @@ Room.addRoom(function (err,newRoom){
         console.log(newRoom)
     }
 });
-console.log(db);
-console.log(db.Mongoose.readyState);
+// console.log(db);
+// console.log(db.Mongoose.readyState);

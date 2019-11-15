@@ -1,7 +1,7 @@
 {
     "db":{
-        "username": "thuan",
-		"password": "12345678",
+        "username": "thuanmongodb",
+		"password": "thuan1996",
 		"host": "127.0.0.1",
 		"port": "27017",
 		"name": "socket-io-db"

@@ -8,9 +8,11 @@
 var Mongoose = require('mongoose');
 
 var roomSchema = new Mongoose.Schema({
-  idRoom : {type: String,required: true},
-  name: {type: String}  
+  idRoom: { type: String, required: true },
+  name: { type: String, required: true }
+}, {
+  timestamps: true
 });
 
-var roomModel = Mongoose.model('room',roomSchema);
-module.exports  = roomModel;
+var roomModel = Mongoose.model('room', roomSchema, 'room');
+module.exports = roomModel;

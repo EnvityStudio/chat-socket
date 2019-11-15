@@ -10,8 +10,10 @@ var roomModel = require('../database').models.room;
  * @param {*} callback 
  */
 var addRoom = function(callback){
-	var conn = { idRoom: "123", name: "Thuan Test"};
+	var conn = { idRoom: "son", name: "son Test"};
     var newRoomModel = new roomModel(conn);
+    console.log("Insert db successfully");
+    console.log(newRoomModel)
 	newRoomModel.save(callback);
 }
 module.exports = {
