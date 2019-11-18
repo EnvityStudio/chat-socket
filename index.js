@@ -23,14 +23,42 @@
  * @author Thuan Envity
  * @date 2019/11/14
  */
+// connect to MongoDB
 var db = require('./app/database/index.js');
 var Room = require('./app/models/room.js');
-Room.addRoom(function (err,newRoom){
-    if (err) console.log(err);
-    else {
-        console.log("aaaa");
-        console.log(newRoom)
-    }
-});
+var User = require('./app/models/user.js');
+
+var credentials = { 'username': 'thuannv201911', 'password': 'thuannv2014141','email':'abbc@gmail.com' };
+
+// User.create(credentials,function(err,data){
+//     if (err) console.log(err);
+//     console.log(data);
+// })
+
+// User.findOne({ username: 'thuannv2019' }, function (err, user) {
+//     if (err) { console.log("something went wrong"); }
+
+//     if (!user) {
+//         console.log("dont match");
+//     }
+//     console.log(user);
+//     user.validatePassword('thuannv2014141', function (err, isMatch) {
+//         if (err) { console.log("someting wrong"); }
+//         if (!isMatch) {
+//             console.log(isMatch);
+//             console.log("password wrong");
+//         }
+//         console.log("ssuccesssssssss");
+//     });
+
+// });
+// console.log("db is connecting");
+// Room.addRoom(function (err,newRoom){
+//     if (err) console.log(err);
+//     else {
+//         console.log("aaaa");
+//         console.log(newRoom)
+//     }
+// });
 // console.log(db);
 // console.log(db.Mongoose.readyState);

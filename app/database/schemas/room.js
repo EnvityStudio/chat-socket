@@ -8,10 +8,13 @@
 var Mongoose = require('mongoose');
 
 var roomSchema = new Mongoose.Schema({
-  idRoom: { type: String, required: true },
-  name: { type: String, required: true }
+	idRoom: { type: String, required: true },
+	name: { type: String, required: true }
 }, {
-  timestamps: true
+	timestamps: {
+		createdAt: 'created_at',
+		updatedAt: 'updated_at'
+	}
 });
 
 var roomModel = Mongoose.model('room', roomSchema, 'room');
