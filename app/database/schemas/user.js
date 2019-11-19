@@ -34,6 +34,8 @@ var UserSchema = new Mongoose.Schema({
  */
 
 UserSchema.methods.validatePassword = function (password, callback) {
+	console.log("password: "+password);
+	console.log("thispassword: "+this.password);
 	bcrypt.compare(password, this.password, function (err, isMatch) {
 		if (err) return callback(err);
 		callback(null, isMatch);
@@ -56,7 +58,7 @@ UserSchema.pre('save', function (next) {
 		if (err) return next(err);
 
 		// hash the password using our new salt 
-		bcrypt.hash(user.password, salt, null, function (err, hash) {
+		bcrypt.hash(user.password, salt, function (err, hash) {
 			if (err) return next(err);
 			//override the clear text password with hashed one 
 			user.password = hash;
