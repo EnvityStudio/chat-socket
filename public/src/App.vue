@@ -2,7 +2,9 @@
   <div id="app">
       <h1>aaaa</h1>
       <div v-for="(room, index) in rooms" v-bind:key = index 
-      >{{room}} </div>
+      >{{room.name}} </div>
+      <input v-model="nameroom" placeholder="type your name">
+      <button v-on:click="this.createRoom">Click</button>
   </div>
 </template>
 
@@ -16,18 +18,20 @@ export default {
   data(){
     return {
       rooms:[],
+      nameroom: "",
       socket: null
     };
   },
   created(){
-    this.socket = io('http://localhost:8081');
+    this.socket = io('http://localhost:3000');
     this.socket.on('connect', () => {
       this.connect();
     });
   },
   mounted(){
+    console.log("aaa"),
     this.socket.on('updateRoomsList', (data) => {
-      this.rooms = data;
+      this.rooms.push(data);
     });
     this.socket.on('disconnect', () => {
       this.rooms = [];
@@ -36,12 +40,18 @@ export default {
   methods:  {
     connect(){
       // this.socket.emit
-      // console.log("connectingggggggggggggggggggggg");
+      console.log("connectingggggggggggggggggggggg");
     },
     createRoom(){
+      // console.log("=======createRoom=====");
       this.socket.emit('createRoom', {
-        title: 'this is title'
+        name: this.nameroom,
+        idRoom: '123'
       });
+      this.nameroom = "";
+    },
+    addRoom(){
+      this.rooms.push("aaaaaaaa");
     }
   }
 }
