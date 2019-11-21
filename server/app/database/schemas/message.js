@@ -8,10 +8,26 @@
 var Mongoose = require('mongoose');
 
 var messageSchema = new Mongoose.Schema({
-	created_by: { type: String, required: true },
-	to_username: { type: String },
-	message: { type: String, required: true },
-	is_viewed: { type: Boolean }
+	created_by: {
+		 type: Schema.Types.ObjectId,
+		 required: true, 
+		 ref: 'user' 
+	},
+	to_username: { 
+		type: Schema.Types.ObjectId,
+		ref: 'user' 
+	},
+	message: {
+		type: String,
+		required: true 
+	},
+	room: {
+		type: Schema.Types.ObjectId, 
+		ref: 'room' 
+	},
+	is_viewed: {
+		 type: Boolean 
+	}
 }, {
 	timestamps: {
 		createdAt: 'created_at',

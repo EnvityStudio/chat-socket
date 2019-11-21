@@ -23,7 +23,7 @@ export default {
     };
   },
   created(){
-    this.socket = io('http://localhost:3000');
+    this.socket = io('http://172.16.110.138:3000');
     this.socket.on('connect', () => {
       this.connect();
     });
@@ -41,7 +41,7 @@ export default {
     connect(){
       // this.socket.emit
       console.log("connectingggggggggggggggggggggg");
-    },
+    }, 
     createRoom(){
       // console.log("=======createRoom=====");
       this.socket.emit('createRoom', {

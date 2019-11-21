@@ -18,9 +18,30 @@ var create = function (data, callback) {
  * @param {*} data 
  * @param {*} callback 
  */
-var findOne = function (data, callback){
-	userModel.findOne(data, callback);
+var findOne = function (data, callback) {
+    userModel.findOne(data, callback);
+}
+/**
+ * 
+ * @param {*} id 
+ * @param {*} callback 
+ */
+var findById = function (id, callback) {
+    userModel.findById(id, callback);
 }
 
+var findOrCreate = function (data, callback) {
+    findOne({ 'social.id': data.id }, function (err, user) {
+        if (err) throw err;
+        if (user) return callback(err, user);
+        else {
 
-module.exports = { create, findOne };
+        }
+    })
+}
+module.exports = {
+    create,
+    findOne,
+    findById,
+    findOrCreate
+};

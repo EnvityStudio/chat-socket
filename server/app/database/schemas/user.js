@@ -17,10 +17,40 @@ const SALT_WORK_FACTOR = 10;
  * Hash user's password
  */
 var UserSchema = new Mongoose.Schema({
-	username: { type: String, required: true, trim: true, unique: true, maxlength: ['15', 'Username should be less than 15 characters'] },
-	password: { type: String, default: null },
-	social: { id: { type: String, default: null }, image: { type: String, default: null }, email: { type: String, default: null } },
-	email: { type: String, trim: true, unique: true }
+	username: { 
+		type: String, 
+		required: true, 
+		trim: true, 
+		unique: true, 
+		minlength: ['5', 'Username should be greater than 5 characters'],
+		maxlength: ['15', 'Username should be less than 15 characters'] 
+	},
+	password: { 
+		type: String, 
+		default: null 
+	},
+	social: { 
+			id: 
+				{ 
+					type: String,
+					default: null 
+				}, 
+			image: 
+				{
+					type: String, 
+					default: null
+				},
+			email: 
+				{
+					type: String,
+					default: null 
+				} 
+		},
+	email: { 
+			type: String, 
+			trim: true,
+			unique: true 
+		}
 }, {
 	timestamps: {
 		createdAt: 'created_at',
@@ -33,13 +63,8 @@ var UserSchema = new Mongoose.Schema({
  * This method will be used to compare the given password with the password stored in the database
  */
 
-UserSchema.methods.validatePassword = function (password, callback) {
-	console.log("password: "+password);
-	console.log("thispassword: "+this.password);
-	bcrypt.compare(password, this.password, function (err, isMatch) {
-		if (err) return callback(err);
-		callback(null, isMatch);
-	});
+UserSchema.methods.isValidatePassword = function (password) {
+	return bcrypt.compare(password, this.password);
 };
 
 /**
@@ -48,15 +73,10 @@ UserSchema.methods.validatePassword = function (password, callback) {
  */
 UserSchema.pre('save', function (next) {
 	var user = this;
-	console.log("user");
-	console.log(user);
-
 	//  only hash the password if it has been modified 
 	if (this.password === '' && !this.isModified('password')) return next();
-	console.log("aaaaaaaaaa");
 	bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
 		if (err) return next(err);
-
 		// hash the password using our new salt 
 		bcrypt.hash(user.password, salt, function (err, hash) {
 			if (err) return next(err);
