@@ -35,3 +35,9 @@ router.post('/logout', async (req, res) => {
     res.status(200).send({ success: true });
 });
 
+router.get('/test',(req,res)=>{
+    res.status(200).send({success: true, msg: 'Successssssssssssssss!!!'});
+});
+
+module.exports = router;
+

@@ -9,12 +9,12 @@ var Mongoose = require('mongoose');
 
 var messageSchema = new Mongoose.Schema({
 	created_by: {
-		 type: Schema.Types.ObjectId,
+		 type: Mongoose.Schema.Types.ObjectId,
 		 required: true, 
 		 ref: 'user' 
 	},
 	to_username: { 
-		type: Schema.Types.ObjectId,
+		type: Mongoose.Schema.Types.ObjectId,
 		ref: 'user' 
 	},
 	message: {
@@ -22,7 +22,7 @@ var messageSchema = new Mongoose.Schema({
 		required: true 
 	},
 	room: {
-		type: Schema.Types.ObjectId, 
+		type: Mongoose.Schema.Types.ObjectId, 
 		ref: 'room' 
 	},
 	is_viewed: {

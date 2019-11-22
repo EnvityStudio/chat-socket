@@ -58,11 +58,24 @@ const checkToken = (req, res, next) => {
             token = token.slice(7, token.length);
         }
         jwt.verify(token, "secret", (err, decoded) => {
-            if(err){
-                return res.json({})
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: 'Token is invalid'
+                });
+            } else {
+                req.decoded = decoded;
+                next();
             }
         });
     }
+    else {
+        return res.json({
+            success: false,
+            message: 'Auth token is not supplied'
+        });
+    }
+
 }
 
 

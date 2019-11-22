@@ -16,7 +16,7 @@ var roomSchema = new Mongoose.Schema({
 		maxlength: ['20', 'Room name should be less than 20 characters']
 	},
 	user: {
-		type: Schema.Types.ObjectId,
+		type: Mongoose.Schema.Types.ObjectId,
 		ref: 'user',
 		default: null
 	},
@@ -24,7 +24,7 @@ var roomSchema = new Mongoose.Schema({
 		{
 			_id: false,
 			lookup: {
-				type: Schema.Types.ObjectId,
+				type: Mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'user'
 			},

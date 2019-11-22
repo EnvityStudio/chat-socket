@@ -13,10 +13,11 @@
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
-"author": "Thuan Envity",
+  "author": "Thuan Envity",
   "dependencies": {
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.10",

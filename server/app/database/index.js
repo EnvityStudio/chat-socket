@@ -10,7 +10,7 @@ var Mongoose = require('mongoose');
 
 // Connect to the database
 // construct the database URI and encode username and password.
-var dbURI = "";
+var dbURI = "mongodb+srv://thuanmongodb:thuan1996@cluster0-n7vmh.mongodb.net/socket-io-db?retryWrites=true&w=majority";
 Mongoose.connect(dbURI, { useCreateIndex: true, useNewUrlParser: true , useUnifiedTopology: true});
 
 // Throw an error if the connection fails
@@ -25,7 +25,7 @@ Mongoose.Promise = global.Promise;
 
 module.exports = { Mongoose, 
 	models: {
-		room: require('./schemas/room.js'),
+		// room: require('./schemas/room.js'),
 		message: require('./schemas/message.js'),
 		user: require('./schemas/user.js')
 	}
