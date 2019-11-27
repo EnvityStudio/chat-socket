@@ -1,58 +1,55 @@
 <template>
   <div id="app">
-      <h1>aaaa</h1>
-      <div v-for="(room, index) in rooms" v-bind:key = index 
-      >{{room.name}} </div>
-      <input v-model="nameroom" placeholder="type your name">
-      <button v-on:click="this.createRoom">Click</button>
+    <router-view />
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import io from 'socket.io-client';
-
+// import io from "socket.io-client";
 export default {
-  name: 'app',
-  
-  data(){
+  name: "App",
+  data() {
     return {
-      rooms:[],
+      rooms: [],
       nameroom: "",
-      socket: null
+      socket: null,
+      dataTest: ""
     };
   },
-  created(){
-    this.socket = io('http://172.16.110.138:3000');
-    this.socket.on('connect', () => {
-      this.connect();
-    });
+  created() {
+    this.dataTest = process.env.BASE_URL;
+
+    // this.socket = io("http://172.16.110.138:3000");
+    // this.socket.on("connect", () => {
+    //   this.connect();
+    // });
   },
-  mounted(){
-    console.log("aaa"),
-    this.socket.on('updateRoomsList', (data) => {
-      this.rooms.push(data);
-    });
-    this.socket.on('disconnect', () => {
-      this.rooms = [];
-    })
+  mounted() {
+    // console.log("aaa"),
+    //   this.socket.on("updateRoomsList", data => {
+    //     this.rooms.push(data);
+    //   });
+    // this.socket.on("disconnect", () => {
+    //   this.rooms = [];
+    // });
   },
-  methods:  {
-    connect(){
+  methods: {
+    connect() {
       // this.socket.emit
       console.log("connectingggggggggggggggggggggg");
-    }, 
-    createRoom(){
+    },
+    createRoom() {
       // console.log("=======createRoom=====");
-      this.socket.emit('createRoom', {
+      this.socket.emit("createRoom", {
         name: this.nameroom,
-        idRoom: '123'
+        idRoom: "123"
       });
       this.nameroom = "";
     },
-    addRoom(){
+    addRoom() {
       this.rooms.push("aaaaaaaa");
     }
   }
-}
+};
 </script>
+<style lang="scss"></style>

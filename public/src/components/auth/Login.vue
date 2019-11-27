@@ -12,28 +12,34 @@
           </span>
           <br />
           <div class="form-input">
-            <input 
-				type="text"
-				name="username"
-				class="form-control" 
-				placeholder="Enter your username"	
-				required
-			/>
-			<label for="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              class="form-control"
+              placeholder="Enter your username"
+              required
+            />
+            <label for="username">Username</label>
           </div>
 
-		  <div class ="form-input">
-			<input
-				type="password"
-				name="password"
-				class="form-control"
-				placeholder="Enter your password"
-				pattern=".{5,15}"
-                title="Password must be between 5 and 15 characters"
-                required
-			/>
-			<label for="password">Password</label>
-		  </div>
+          <div class="form-input">
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter your password"
+              pattern=".{5,15}"
+              title="Password must be between 5 and 15 characters"
+              required
+            />
+            <label for="password">Password</label>
+          </div>
+          <div class="form-input">
+            <span>Do you have an account?</span>
+            <br />
+            <router-link :to="{ name: 'Register' }">Register</router-link>
+          </div>
+          <button type="submit" class="form-submit">Login</button>
         </form>
       </div>
     </section>
@@ -45,7 +51,7 @@ import setAuthToken from "../../utils/authToken";
 
 export default {
   name: "Login",
-  props: ["message"],
+  props: { message: String },
   components: {},
   data: function() {
     return {
