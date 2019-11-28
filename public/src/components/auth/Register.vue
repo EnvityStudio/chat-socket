@@ -16,6 +16,7 @@
               class=""
               placeholder="Enter your username"
               required
+              v-model.trim="username"
             />
             <label for="username">Username</label>
           </div>
@@ -25,6 +26,7 @@
               name="password"
               class=""
               placeholder="Enter your password"
+              v-model.trim="password"
               required
             />
             <label for="password">Password</label>
@@ -42,16 +44,37 @@
 </template>
 
 <script>
+import api from "../../api/service.api";
 export default {
   name: "Register",
   data: function() {
     return {
-		username: '',
-		password: '',
-		email: '',
-		errors: []
-	};
+      username: "",
+      password: "",
+      email: "",
+      errors: []
+    };
   },
-  
+  computed: {},
+  methods: {
+    async handleSubmit() {
+      this.errors = [];
+      if (this.username && this.password) {
+        await api
+          .registerUser({ username: this.username, password: this.password })
+          .then(async res => {
+            console.log(res.status);
+            if (res.status === 200) {
+              console.log();
+              console.log("Register Successfully");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            console.log("register failure!!!");
+          });
+      }
+    }
+  }
 };
 </script>

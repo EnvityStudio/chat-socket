@@ -16,69 +16,92 @@ const { checkLoginFields, createErrorObject } = require('../middleware/authentic
  * @description POST /login 
  */
 router.post('/login', checkLoginFields, async (req, res) => {
-    const user = await User.findOne({ username: req.body.username });
-    if (!user) {
-        return res.status(404).send({
-            error: 'No User Found'
-        });
-    }
-    const token = jwt.sign(user.toObject(), "secret", { expiresIn: 18000 });
-    res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
+	const user = await User.findOne({ username: req.body.username });
+	if (!user) {
+		return res.status(404).send({
+			error: 'No User Found'
+		});
+	}
+	const token = jwt.sign(user.toObject(), "secret", { expiresIn: 18000 });
+	res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
 });
 
+/**
+ * @description POST /logout
+ */
 router.post('/logout', async (req, res) => {
-    const user = await User.findOne({ username: req.body.username });
+	const user = await User.findOne({ username: req.body.username });
 
-    if (!user) {
-        return res.status(404).send({
-            error: 'No User Found'
-        });
-    }
-    res.status(200).send({ success: true });
+	if (!user) {
+		return res.status(404).send({
+			error: 'No User Found'
+		});
+	}
+	res.status(200).send({ success: true });
 });
 
-router.get('/test', (req, res) => {
-    res.status(200).send({ success: true, msg: 'Successssssssssssssss!!!' });
-});
-
+/**
+ * @description POST /register
+ */
 router.post('/register', async (req, res) => {
-    let errors = [];
-    User.findOne({ username: req.body.username }, function (err, user) {
-        if(err) throw err;
-        if (user) {
-            errors.push({ param: 'email', msg: 'Email is already taken' });
-            console.log("error");
-            res.send({
-                errors: createErrorObject(errors)
-            }).end();
-        }
-        else {
-            const credentials = {
-                username: req.body.username,
-                password: req.body.password
-            };
-            User.create(credentials, function (err, userData) {
-                if (err) {
-                    console.log("create user error");
-                    res.send({
-                        err,
-                        error: 'Something went wrong, Please check the fields again'
-                    });
-                }
-                const user = _.omit(userData.toObject(), ['password']);
-                const token = jwt.sign(user, "secret", {
-                    expiresIn: 18000
-                });
-                console.log("Register successfully");
-                res.status(200).send({
-                    auth: true,
-                    token: `Bearer ${token}`,
-                    user
-                });
-            });
-        }
-    });
+	let errors = [];
+	User.findOne({ username: req.body.username }, function (err, user) {
+		if (err) throw err;
+		if (user) {
+			errors.push({ param: 'email', msg: 'Email is already taken' });
+			console.log("error");
+			res.send({
+				errors: createErrorObject(errors)
+			}).end();
+		}
+		else {
+			const credentials = {
+				username: req.body.username,
+				password: req.body.password,
+				email: req.body.username + "@gmail.com"
+			};
+			User.create(credentials, function (err, userData) {
+				if (err) {
+					console.log("create user error");
+					res.send({
+						err,
+						error: 'Something went wrong, Please check the fields again'
+					});
+				}
+				const user = _.omit(userData.toObject(), ['password']);
+				const token = jwt.sign(user, "secret", {
+					expiresIn: 18000
+				});
+				console.log("Register successfully");
+				res.status(200).send({
+					auth: true,
+					token: `Bearer ${token}`,
+					user
+				});
+			});
+		}
+	});
 });
+/**
+ * @description POST /login
+ * @param checkLoginFields
+ * @param request
+ * @param response
+ * @access public 
+ */
+router.post('login', checkLoginFields, async (req, res) => {
+	const user = await User.findOne({ username: req.body.username }).select('-password');
+	if (!user) {
+		return res.status(404).send({
+			error: 'No User Found'
+		});
+	}
+	console.log("jwt_secret: " + process.env.JWT_SECRET);
+	const token = jwt.sign(user.toObject(), process.env.JWT_SECRET, { expiresIn: 18000 });
+	res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
+});
+
+
 
 module.exports = router;
 

@@ -19,6 +19,8 @@ var create = function (data, callback) {
  * @param {*} callback 
  */
 var findOne = function (data, callback) {
+    console.log("data");
+    console.log(data);
     userModel.findOne(data, callback);
 }
 /**

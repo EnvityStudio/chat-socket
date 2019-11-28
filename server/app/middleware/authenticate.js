@@ -12,24 +12,29 @@ var jwt = require('jsonwebtoken');
  */
 const checkLoginFields = async (req, res, next) => {
     let errors = [];
-    const user = await User.findOne({ 'username': req.body.username });
-    if (!user) {
-        errors.push({ param: 'username', msg: 'Invalid Details Entered' });
-    }
-    else {
-        if (req.body.password !== null && !await user.isValidatePassword) {
+    console.log("Aaa: " + req.body.username);
+    await User.findOne({ username: req.body.username }, function (err, user) {
+        if (err) throw err;
+
+        if (!user) {
             errors.push({ param: 'username', msg: 'Invalid Details Entered' });
         }
-    }
+        else {
+            let isValidPassword = user.isValidatePassword(req.body.password);
+            if (!isValidPassword) {
+                errors.push({ param: 'password', msg: 'Invalid Details Entered' });
+            }
+        }
 
-    if (errors.length !== 0) {
-        res.send({
-            errors: createErrorObject(errors)
-        });
-    }
-    else {
-        next();
-    }
+        if (errors.length !== 0) {
+            res.send({
+                errors: createErrorObject(errors)
+            });
+        }
+        else {
+            next();
+        }
+    });
 }
 
 //

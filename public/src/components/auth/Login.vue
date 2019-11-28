@@ -18,6 +18,7 @@
               class="form-control"
               placeholder="Enter your username"
               required
+              v-model.trim="username"
             />
             <label for="username">Username</label>
           </div>
@@ -31,6 +32,7 @@
               pattern=".{5,15}"
               title="Password must be between 5 and 15 characters"
               required
+              v-model.trim="password"
             />
             <label for="password">Password</label>
           </div>
@@ -46,8 +48,8 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import setAuthToken from "../../utils/authToken";
+import api from "../../api/service.api";
+// import setAuthToken from "../../utils/authToken";
 
 export default {
   name: "Login",
@@ -69,22 +71,10 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       this.errors = [];
       if (this.username && this.password) {
-        axios
-          .post("/api/auth/login", {
-            username: this.username,
-            password: this.password
-          })
-          .then(res => {
-            if (res.data.errors) {
-              console.log(res.data.errors);
-            } else {
-              localStorage.setItem("authToken", res.data.token);
-              setAuthToken(res.data.token);
-            }
-          });
+        await api.loginUser({ username: this.username });
       }
     }
   }
