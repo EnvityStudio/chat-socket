@@ -5,6 +5,8 @@ import axios from 'axios';
 // import io from 'socket.io-client';
 import setAuthToken from './utils/authToken';
 import moment from 'moment';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 Vue.config.productionTip = false

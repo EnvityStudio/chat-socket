@@ -1,35 +1,78 @@
 <template>
   <div class="page list-room">
-    <section class="section">
-      <div>
-        <span class="section_title">Room List</span>
-      </div>
-      <div class="rooms" v-if="rooms" v-show="rooms.length !== 0">
-        <div class="rooms_detail item">
-          Total Rooms: <span> {{ rooms.length }}</span>
-        </div>
-		<div class="list-room">
-			<ul>
-				<li v-for="room in rooms" :key="room.id">{{room.name}}</li>
-			</ul>
-		</div>
-      </div>
-    </section>
+    <table class="table-full-width">
+      <tbody>
+        <tr v-for="room in listRoom" :key="room.id">
+          <td>
+            <button
+              type="button"
+              class="btn btn-light btn-block btn-room-in-list"
+              @click="chooseRoom(room)"
+            >
+              <img
+                src="../../assets/icon_group.png"
+                alt="icon-room"
+                class="icon-room-in-list"
+              />
+              <span>{{ room.room_name }}</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   name: "ListRoom",
   props: ["message"],
   data: function() {
     return {
       rooms: [],
-      errors: []
+      errors: [],
+      listRoom: [
+        {
+          id: 1,
+          room_name: "room 1",
+          icon: ""
+        },
+        {
+          id: 2,
+          room_name: "room 2",
+          icon: ""
+        },
+        {
+          id: 3,
+          room_name: "room 3",
+          icon: ""
+        },
+        {
+          id: 4,
+          room_name: "room 4",
+          icon: ""
+        }
+      ]
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    chooseRoom(room) {
+      let roomConservation = room.id;
+      this.$emit("chooseRoom", roomConservation);
+    }
+  }
 };
 </script>
+<style lang="scss" scoped>
+.table-full-width {
+  width: 100%;
+}
+.icon-room-in-list {
+  width: 50px;
+  height: 50px;
+  margin-right: 5%;
+}
+.btn-room-in-list {
+  text-align: left;
+}
+</style>

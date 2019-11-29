@@ -1,15 +1,10 @@
 <template>
-  <div class="page login">
-    <section>
-      <div>Register Here</div>
-      <div class="section-content">
-        <p>We hope will you enjoy our application!</p>
-      </div>
-      <div>
+  <div>
+    <div class="container login-container">
+      <div class="col-md-5 login-form-1">
+        <img alt="icon-user" src="../../assets/user.jpg" class="user-icon" />
         <form @submit.prevent="handleSubmit" class="form">
-          <span>We always welcome new Envity</span>
-          <br />
-          <div class="form-input-group">
+          <div class="form-group">
             <input
               type="text"
               name="username"
@@ -18,28 +13,27 @@
               required
               v-model.trim="username"
             />
-            <label for="username">Username</label>
           </div>
-          <div class="form-input-group">
+          <div class="form-group">
             <input
               type="password"
               name="password"
               class=""
               placeholder="Enter your password"
+              pattern=".{5,15}"
+              title="Password must be between 5 and 15 characters"
               v-model.trim="password"
               required
             />
-            <label for="password">Password</label>
           </div>
-          <div class="form-input-group">
-            <span>Already have an account?</span>
-            <br />
-            <router-link :to="{ name: 'Login' }">Login</router-link>
-          </div>
-          <button type="submit" class="form-submit">Register</button>
+          <button type="submit" class="btnSubmit">Sign Up</button>
         </form>
+        <div class="form-input-group">
+          <span>Already have an account? </span>
+          <router-link :to="{ name: 'Login' }">Sign in</router-link>
+        </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -78,3 +72,46 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.container {
+  margin: auto;
+}
+.login-container {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  text-align: center;
+}
+.login-form-1 {
+  padding: 5%;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  margin: auto;
+  margin-top: 2%;
+}
+.login-form-1 h3 {
+  text-align: center;
+  color: #333;
+}
+.login-container form {
+  padding: 10%;
+}
+.btnSubmit {
+  width: 50%;
+  border-radius: 1rem;
+  padding: 1.5%;
+  border: none;
+  cursor: pointer;
+}
+.login-form-1 .btnSubmit {
+  font-weight: 600;
+  color: #fff;
+  background-color: #0062cc;
+}
+.login-form-1 .ForgetPwd {
+  color: #0062cc;
+  font-weight: 600;
+  text-decoration: none;
+}
+.user-icon {
+  max-width: 150px;
+}
+</style>
