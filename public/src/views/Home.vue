@@ -49,7 +49,7 @@ export default {
     data() {
         return{
             tabs: ["ListFriend", "ListRoom"],
-            selected: "ListFriend"
+            selected: "ListRoom"
         }
     }
 }

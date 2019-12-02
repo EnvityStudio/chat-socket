@@ -41,6 +41,7 @@
 </template>
 <script>
 import api from "../../api/service.api";
+import setAuthToken from "../../utils/authToken";
 // import setAuthToken from "../../utils/authToken";
 
 export default {
@@ -66,7 +67,16 @@ export default {
     async handleSubmit() {
       this.errors = [];
       if (this.username && this.password) {
-        await api.loginUser({ username: this.username });
+        await api
+          .loginUser({ username: this.username, password: this.password })
+          .then(async res => {
+            console.log(res);
+            if (res.status === 200) {
+              localStorage.setItem("authToken", res.data.token);
+              setAuthToken(res.data.token);
+              this.$router.push({ name: "Home" });
+            }
+          });
       }
     }
   }

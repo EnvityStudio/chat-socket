@@ -39,6 +39,7 @@
 
 <script>
 import api from "../../api/service.api";
+import setAuthToken from "../../utils/authToken";
 export default {
   name: "Register",
   data: function() {
@@ -59,8 +60,11 @@ export default {
           .then(async res => {
             console.log(res.status);
             if (res.status === 200) {
-              console.log();
-              console.log("Register Successfully");
+              localStorage.setItem("authToken", res.data.token);
+              setAuthToken(res.data.token);
+              this.$router.push({
+                name: "Home"
+              });
             }
           })
           .catch(error => {
