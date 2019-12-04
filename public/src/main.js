@@ -7,6 +7,9 @@ import setAuthToken from './utils/authToken';
 import moment from 'moment';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/js/dist/modal'
+import 'bootstrap/js/dist/tooltip'
+import 'bootstrap/scss/bootstrap.scss'
 
 
 Vue.config.productionTip = false

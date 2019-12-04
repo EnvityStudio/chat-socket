@@ -32,6 +32,7 @@ export default {
     // this.socket.on("disconnect", () => {
     //   this.rooms = [];
     // });
+     document.body.style.overflowY = "hidden";
   },
   methods: {
     connect() {
@@ -52,4 +53,8 @@ export default {
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+  .body{
+    overflow-y: hidden;
+  }
+</style>
