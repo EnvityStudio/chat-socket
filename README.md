@@ -10,7 +10,7 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 1. Clone or Download the repository
 
 	```
-	$ git clone https://github.com/OmarElGabry/chat.io.git
+	$ git clone https://github.com/EnvityStudio/chat-socket.git
 	$ cd chat.io
 	```
 2. Install Dependencies
@@ -19,13 +19,7 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 	$ npm install
 	```
 2. Edit configuration file in _app/config/config.json_ with your credentials(see [Setup Configurations](#configurations)).
-3. Download and Install [Redis](http://redis.io/download).
-4. Running Redis Server(as Admin)
-
-	```
-	$ redis-server
-	``` 
-5. Start the application
+3. Start the application
 
 	```
 	$ npm start
