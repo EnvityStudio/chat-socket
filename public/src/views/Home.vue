@@ -56,7 +56,7 @@
           id="scrollbar-list-conversation"
           class="content-conversation scrollbar scrollbar-near-moon"
         >
-          <Conservation></Conservation>
+          <Conservation ref="conversation"></Conservation>
         </div>
         <div id="input-message" class="input-message position-fixed">
           <div class="input-group">
@@ -64,9 +64,10 @@
               class="form-control custom-control textarea-send-message"
               rows="2"
               style="resize:none"
+              v-model="post.content"
             ></textarea>
             <span class="btn-send-message">
-              <button class="btn btn-default p-0" type="button">
+              <button class="btn btn-default p-0" type="button" @click="sendPost">
                 <img
                   src="../assets/icon_send.png"
                   alt="icon-send-message"
@@ -98,23 +99,31 @@ export default {
   data() {
     return {
       tabs: ["ListFriend", "ListRoom"],
-      selected: "ListFriend"
+      selected: "ListFriend",
+      post: {
+        content: '',
+        user: 'user 0',
+        date: '2019-29-11',
+        roomId: '1'
+      },
     };
   },
   methods: {
     setScrollHeight(screenHeight) {
-      let heightScrollbarListConversation =
-        screenHeight -
-        $("#content-group").height() -
-        $("#input-message").height() -
-        20;
-      let heightScrollbarListRoom =
-        screenHeight - $("#scrollbar-list-room").offset().top - 20;
+      let [heightScrollbarListConversation, heightScrollbarListRoom] = [
+            screenHeight - $("#content-group").height() - $("#input-message").height() - 20,
+            screenHeight - $("#scrollbar-list-room").offset().top - 20
+          ];
       $("#scrollbar-list-room").css("height", heightScrollbarListRoom + "px");
-      $("#scrollbar-list-conversation").css(
-        "height",
-        heightScrollbarListConversation + "px"
-      );
+      $("#scrollbar-list-conversation").css("height", heightScrollbarListConversation + "px");
+    },
+    sendPost(){
+      if(this.$refs.conversation.updateConversation(this.post)){
+        this.post.content = '';
+        setTimeout(function () {
+          $("#scrollbar-list-conversation").scrollTop(10000);
+        }, 100);
+      }
     }
   }
 };

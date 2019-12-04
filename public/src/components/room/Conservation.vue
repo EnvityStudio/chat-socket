@@ -1,8 +1,8 @@
 <template>
   <div class="component-conversation">
     <div
-      v-for="mess in listMessage"
-      :key="mess.id"
+      v-for="(mess, index) in listMessage"
+      :key="index"
       class="div-content-message"
       :class="[mess.user === 'user 0' ? 'div-content-message-right' : '']"
     >
@@ -121,6 +121,31 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+    updateConversation(newPost){
+      this.listMessage.push({
+        id: '',
+        content: newPost.content,
+        date: newPost.date,
+        user: newPost.user
+      });
+      if(parseInt(newPost.content)){
+        for(let index = 0 ; index < parseInt(newPost.content) ; index++ ){
+          if(index > 5){
+            break;
+          }else{
+            this.listMessage.push({
+              id: '',
+              content: Math.random(),
+              date: '',
+              user: 'user 1'
+            });
+          }
+        }
+      }
+      return true;
+    }
   }
 };
 </script>
