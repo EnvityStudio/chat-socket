@@ -63,7 +63,7 @@ var UserSchema = new Mongoose.Schema({
  * This method will be used to compare the given password with the password stored in the database
  */
 
-UserSchema.methods.isValidatePassword = function (password) {
+UserSchema.methods.isValidatePassword = function (password, callback) {	
 	return bcrypt.compare(password, this.password);
 };
 

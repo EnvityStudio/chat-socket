@@ -13,17 +13,24 @@ var User = require('../models/user.js');
 const { checkLoginFields, createErrorObject } = require('../middleware/authenticate.js');
 
 /**
- * @description POST /login 
+ * @description POST /login
+ * @param checkLoginFields
+ * @param request
+ * @param response
+ * @access public 
  */
-router.post('/login', checkLoginFields, async (req, res) => {
-	const user = await User.findOne({ username: req.body.username });
-	if (!user) {
-		return res.status(404).send({
-			error: 'No User Found'
-		});
-	}
-	const token = jwt.sign(user.toObject(), "secret", { expiresIn: 18000 });
-	res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
+router.post('/login', checkLoginFields, (req, res) => {
+	User.findOne({ username: req.body.username }, function (err, user) {
+		if (err) throw err;
+		if (!user) {
+			return res.status(404).send({
+				error: 'No User Found'
+			});
+		}
+		const token = jwt.sign(user.toObject(), "secret", { expiresIn: 18000 });
+		res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
+	});
+
 });
 
 /**
@@ -82,25 +89,6 @@ router.post('/register', async (req, res) => {
 		}
 	});
 });
-/**
- * @description POST /login
- * @param checkLoginFields
- * @param request
- * @param response
- * @access public 
- */
-router.post('login', checkLoginFields, async (req, res) => {
-	const user = await User.findOne({ username: req.body.username }).select('-password');
-	if (!user) {
-		return res.status(404).send({
-			error: 'No User Found'
-		});
-	}
-	console.log("jwt_secret: " + process.env.JWT_SECRET);
-	const token = jwt.sign(user.toObject(), process.env.JWT_SECRET, { expiresIn: 18000 });
-	res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
-});
-
 
 
 module.exports = router;

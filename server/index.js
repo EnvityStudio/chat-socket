@@ -34,8 +34,8 @@ const authRouters = require('./app/routes/auth.js');
 app.use('/api/auth', authRouters);
 
 /** Handing wrong url */
-app.get('/*',function(req,res){
-    res.status(404).sendFile(process.cwd()+'/app/views/404.htm');
+app.get('/*', function (req, res) {
+    res.status(404).sendFile(process.cwd() + '/app/views/404.htm');
 })
 
 // Set the port number

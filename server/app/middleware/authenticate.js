@@ -1,6 +1,7 @@
 /**
  * @author Thuan Envity
  */
+'use strict'
 var User = require('../models/user.js');
 var jwt = require('jsonwebtoken');
 
@@ -12,23 +13,20 @@ var jwt = require('jsonwebtoken');
  */
 const checkLoginFields = async (req, res, next) => {
     let errors = [];
-    console.log("Aaa: " + req.body.username);
-    await User.findOne({ username: req.body.username }, function (err, user) {
+    User.findOne({ username: req.body.username }, async function (err, user) {
         if (err) throw err;
-
         if (!user) {
             errors.push({ param: 'username', msg: 'Invalid Details Entered' });
         }
         else {
-            let isValidPassword = user.isValidatePassword(req.body.password);
-            if (!isValidPassword) {
-                errors.push({ param: 'password', msg: 'Invalid Details Entered' });
-            }
+          if (req.body.password !== null && !await user.isValidatePassword(req.body.password)){
+             errors.push({param: 'username',msg:'Invalid Details Entered'});
+          }
         }
-
         if (errors.length !== 0) {
-            res.send({
+            res.status(400).send({
                 errors: createErrorObject(errors)
+
             });
         }
         else {
