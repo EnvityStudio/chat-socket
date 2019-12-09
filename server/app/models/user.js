@@ -39,9 +39,14 @@ var findOrCreate = function (data, callback) {
         }
     })
 }
+
+var find = function (data, callback) {
+    userModel.find(data, callback);
+}
 module.exports = {
     create,
     findOne,
     findById,
-    findOrCreate
+    findOrCreate,
+    find
 };

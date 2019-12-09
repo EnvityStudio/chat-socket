@@ -13,7 +13,9 @@ var logger = require('../logger');
 var createRoom = function (data, callback) {
     logger.info("create new room");
     var newRoom = new roomModel(data);
-    newRoom.save(callback);
+    newRoom.save().then(room => {
+        roomModel.populate(room, { path: 'user', select: ['username', 'email'] }, callback);
+    });
 }
 /**
  * 
@@ -23,7 +25,12 @@ var createRoom = function (data, callback) {
 var findOne = function (data, callback) {
     roomModel.findOne(data, callback);
 }
+
+var find = function (data, callback) {
+    roomModel.find(data, callback);
+}
 module.exports = {
     createRoom,
-    findOne
+    findOne,
+    find
 }

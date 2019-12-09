@@ -19,9 +19,9 @@ const checkLoginFields = async (req, res, next) => {
             errors.push({ param: 'username', msg: 'Invalid Details Entered' });
         }
         else {
-          if (req.body.password !== null && !await user.isValidatePassword(req.body.password)){
-             errors.push({param: 'username',msg:'Invalid Details Entered'});
-          }
+            if (req.body.password !== null && !await user.isValidatePassword(req.body.password)) {
+                errors.push({ param: 'username', msg: 'Invalid Details Entered' });
+            }
         }
         if (errors.length !== 0) {
             res.status(400).send({
@@ -60,9 +60,9 @@ const checkToken = (req, res, next) => {
             // remove bearer from string
             token = token.slice(7, token.length);
         }
-        jwt.verify(token, "secret", (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                return res.json({
+                return res.status(401).json({
                     success: false,
                     message: 'Token is invalid'
                 });
@@ -73,7 +73,7 @@ const checkToken = (req, res, next) => {
         });
     }
     else {
-        return res.json({
+        return res.status(401).json({
             success: false,
             message: 'Auth token is not supplied'
         });

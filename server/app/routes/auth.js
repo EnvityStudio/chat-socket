@@ -27,9 +27,10 @@ router.post('/login', checkLoginFields, (req, res) => {
 				error: 'No User Found'
 			});
 		}
-		const token = jwt.sign(user.toObject(), "secret", { expiresIn: 18000 });
+		const token = jwt.sign(user.toObject(), process.env.JWT_SECRET, { expiresIn: 1800000 });
+		res.set('Authorization', `Bearer ${token}`);
 		res.status(200).send({ auth: true, token: `Bearer ${token}`, user });
-	});
+      	});
 
 });
 
@@ -77,8 +78,9 @@ router.post('/register', async (req, res) => {
 				}
 				const user = _.omit(userData.toObject(), ['password']);
 				const token = jwt.sign(user, "secret", {
-					expiresIn: 18000
+					expiresIn: 1800000
 				});
+
 				console.log("Register successfully");
 				res.status(200).send({
 					auth: true,

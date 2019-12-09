@@ -12,6 +12,7 @@ var roomSchema = new Mongoose.Schema({
 		type: String,
 		required: true,
 		trim: true,
+		unique: true,
 		minlength: ['3', 'Room name should be greater than 3 characters'],
 		maxlength: ['20', 'Room name should be less than 20 characters']
 	},
@@ -27,10 +28,6 @@ var roomSchema = new Mongoose.Schema({
 				type: Mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'user'
-			},
-			socketId: {
-				type: String,
-				required: true
 			}
 		}
 	]

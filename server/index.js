@@ -24,14 +24,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(cors());
+/** Dotenv Environment Variables */
+require('dotenv').config();
 
 /** Routers */
 const authRouters = require('./app/routes/auth.js');
+const roomRouters = require('./app/routes/room.js');
+const userRouters = require('./app/routes/user.js');
 
 
 
 /** Router Definition */
 app.use('/api/auth', authRouters);
+
+app.use('/api/room', roomRouters);
+
+app.use('/api/user', userRouters);
 
 /** Handing wrong url */
 app.get('/*', function (req, res) {
