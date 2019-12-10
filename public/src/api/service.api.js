@@ -8,16 +8,37 @@ import axios from "axios";
 const URL_SERVER = process.env.VUE_APP_URL_SERVER;
 export default {
     registerUser: async function (data) {
-        return await axios({
+        return axios({
             method: "POST",
             url: `${URL_SERVER}/auth/register`,
             data: data
         });
     },
     loginUser: async function (data) {
-        return await axios({
+        return axios({
             method: "POST",
             url: `${URL_SERVER}/auth/login`,
+            data: data
+        });
+    },
+    getAllUsers: async function (params) {
+        return axios({
+            method: "GET",
+            url: `${URL_SERVER}/user/getAllUsers`,
+            params: params
+        });
+    },
+    getAllRooms: async function (params) {
+        return axios({
+            method: "GET",
+            url: `${URL_SERVER}/room/getAllRooms`,
+            params: params
+        });
+    },
+    createRoom: async function (data) {
+        return axios({
+            method: "POST",
+            url: `${URL_SERVER}/room/createRoom`,
             data: data
         });
     }

@@ -10,7 +10,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/modal'
 import 'bootstrap/js/dist/tooltip'
 import 'bootstrap/scss/bootstrap.scss'
-
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false
 Vue.prototype.moment = moment;

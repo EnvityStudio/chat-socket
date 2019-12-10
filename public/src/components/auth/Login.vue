@@ -67,10 +67,10 @@ export default {
     async handleSubmit() {
       this.errors = [];
       if (this.username && this.password) {
-        await api
+        return await api
           .loginUser({ username: this.username, password: this.password })
           .then(async res => {
-              console.log(JSON.stringify(res));
+            console.log(JSON.stringify(res));
             if (res.data.errors) {
               console.log("Login errors");
               console.log(JSON.stringify(res.data.errors));
@@ -84,6 +84,10 @@ export default {
               setAuthToken(res.data.token);
               this.$router.push({ name: "Home" });
             }
+          })
+          .catch(error => {
+            console.log(error);
+            console.log("login fail!!!");
           });
       }
     }
