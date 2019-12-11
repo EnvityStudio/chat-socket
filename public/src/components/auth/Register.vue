@@ -54,6 +54,7 @@ import setAuthToken from "../../utils/authToken";
 
 export default {
   name: "Register",
+  props: ["socket"],
   data: function() {
     return {
       username: "",
@@ -61,6 +62,8 @@ export default {
       email: "",
       errors: []
     };
+  },
+  created() {
   },
   computed: {},
   methods: {

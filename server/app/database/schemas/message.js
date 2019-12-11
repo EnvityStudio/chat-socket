@@ -19,7 +19,8 @@ var messageSchema = new Mongoose.Schema({
 	},
 	message: {
 		type: String,
-		required: true 
+		required: true,
+		trim: true
 	},
 	room: {
 		type: Mongoose.Schema.Types.ObjectId, 

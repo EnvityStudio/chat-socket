@@ -66,6 +66,7 @@
           <Conservation
             ref="conversation"
             :conversation="conversation"
+			:socket="this.socket"
           ></Conservation>
         </div>
         <div id="input-message" class="input-message position-fixed">
@@ -104,6 +105,7 @@ import $ from "jquery";
 
 export default {
   name: "Home",
+  props:["socket"],
   components: {
     ListRoom,
     ListFriend,

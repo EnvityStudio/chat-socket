@@ -38,7 +38,8 @@ export default {
           content: []
         };
       }
-    }
+	},
+	socket: {required: true}
   },
   data() {
     return {

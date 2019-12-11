@@ -13,6 +13,7 @@ import 'bootstrap/scss/bootstrap.scss'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false
@@ -20,11 +21,9 @@ Vue.prototype.moment = moment;
 
 // let socket = null;
 
-
-///
+/** Socket IO Client */
 // socket = io("http://172.16.110.138:3000/");
 
-///
 
 /** Check for auth token on refresh and set authorization header for incoming requests  */
 if (localStorage.authToken) {
