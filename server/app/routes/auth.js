@@ -20,7 +20,7 @@ const { checkLoginFields, createErrorObject } = require('../middleware/authentic
  * @access public 
  */
 router.post('/login', checkLoginFields, (req, res) => {
-	User.findOne({ username: req.body.username }, function (err, user) {
+	User.getUser({ username: req.body.username }, function (err, user) {
 		if (err) throw err;
 		if (!user) {
 			return res.status(404).send({

@@ -26,17 +26,16 @@
 import api from "../../api/service.api";
 export default {
   name: "ListRoom",
-  props: ["message"],
+  props: ["message", "listRoom"],
   data: function() {
     return {
       rooms: [],
-      errors: [],
-      listRoom: []
+      errors: []
     };
   },
   computed: {},
   mounted() {
-    this.getListRoom();
+    // this.getListRoom();
   },
   methods: {
     chooseRoom(room) {
@@ -49,21 +48,7 @@ export default {
           content: []
         }
       });
-    },
-    async getListRoom(currentUser) {
-      return await api
-        .getAllRooms(currentUser)
-        .then(async res => {
-          if (res.status === 200) {
-            this.listRoom = res.data.rooms;
-            console.log(res);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          console.log("GET listRoom Fail!");
-        });
-    }
+	}
   }
 };
 </script>

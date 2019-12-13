@@ -10,13 +10,11 @@
         src="../../assets/icon_user.png"
         alt="icon-user-conversation"
         class="navbar-toggler-icon img-icon-user-conversation"
-        :class="[
-          mess.user === 'user 0' ? 'img-icon-user-conversation-right' : ''
-        ]"
+        :class="[mess.isSend ? 'img-icon-user-conversation-right' : '']"
       />
       <span
         class="span-content-message"
-        :class="[mess.user === 'user 0' ? 'span-content-message-right' : '']"
+        :class="[mess.isSend ? 'span-content-message-right' : '']"
         >{{ mess.content }}</span
       >
     </div>
@@ -38,8 +36,8 @@ export default {
           content: []
         };
       }
-	},
-	socket: {required: true}
+    },
+    socket: { required: true }
   },
   data() {
     return {
@@ -50,26 +48,12 @@ export default {
     updateConversation(newPost) {
       this.listMessage.push({
         id: "",
-        content: newPost.content,
+        content: newPost.message,
         date: newPost.date,
-        user: newPost.user
+        user: newPost.user,
+        isSend: newPost.isSend
       });
-      if (parseInt(newPost.content)) {
-        for (let index = 0; index < parseInt(newPost.content); index++) {
-          if (index > 10) {
-            break;
-          } else {
-            this.listMessage.push({
-              id: "",
-              content: Math.random(),
-              date: "",
-              user: "user 1"
-            });
-          }
-        }
-      }
-      return true;
-    }
+	}
   }
 };
 </script>

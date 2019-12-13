@@ -7,14 +7,25 @@
             <button
               type="button"
               class="btn btn-light btn-block btn-friend-in-list"
-              @click="chooseFriend(friend)"
+              @click="toggleSelectFriend(friend)"
             >
-              <img
-                src="../../assets/icon_user.png"
-                alt="icon-room"
-                class="icon-friend-in-list"
-              />
-              <span>{{ friend.username }}</span>
+              <div style = "width: 100%">
+                <div style="float: left">
+                  <img
+                    src="../../assets/icon_user.png"
+                    alt="icon-room"
+                    class="icon-friend-in-list"
+                  />
+                  <span>{{ friend.username }}</span>
+                </div>
+                <div style="float: left">
+                  <img
+                    src="../../assets/isOffline.png"
+                    alt="icon-room"
+                    class="icon-friend-online-offline"
+                  />
+                </div>
+              </div>
             </button>
           </td>
         </tr>
@@ -24,44 +35,22 @@
 </template>
 
 <script>
-import api from "../../api/service.api";
 export default {
   name: "ListFriend",
-  props: ["message"],
+  props: ["message", "listFriend"],
   data: function() {
     return {
       users: [],
-      errors: [],
-      listFriend: []
+      errors: []
     };
   },
   mounted() {
-    this.getListFriend();
+    // this.getListFriend();
   },
   methods: {
-    chooseFriend(friend) {
+    toggleSelectFriend(friend) {
       //call API to get content
-      this.$emit("chooseFriend", {
-        type: 1,
-        conversation: {
-          icon: friend.social.image,
-          name: friend.username,
-          content: []
-        }
-      });
-    },
-    async getListFriend(currentUser) {
-      return await api
-        .getAllUsers(currentUser)
-        .then(async res => {
-          if (res.status === 200) {
-            this.listFriend = res.data.users;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          console.log("GET listFriend Fail!");
-        });
+      this.$emit("toggleSelectFriend", friend);
     }
   }
 };
@@ -76,7 +65,11 @@ export default {
   height: 50px;
   margin-right: 5%;
 }
-
+.icon-friend-online-offline {
+  width: 10px;
+  height: 10px;
+  margin-left: 5%;
+}
 .btn-friend-in-list {
   text-align: left;
 }

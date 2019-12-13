@@ -27,7 +27,14 @@ export default {
             url: `${URL_SERVER}/user/getAllUsers`,
             params: params
         });
-    },
+	},
+	getCurrentUser: async function (params) {
+		return axios({
+			method: "GET",
+			url: `${URL_SERVER}/user/getCurrentUser`,
+			params: params
+		});
+	},
     getAllRooms: async function (params) {
         return axios({
             method: "GET",
@@ -41,5 +48,6 @@ export default {
             url: `${URL_SERVER}/room/createRoom`,
             data: data
         });
-    }
+	}
+	
 }

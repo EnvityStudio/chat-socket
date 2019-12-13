@@ -40,8 +40,10 @@
             <keep-alive>
               <component
                 :is="currentTab"
-                @chooseRoom="prepareForConversation"
-                @chooseFriend="prepareForConversation"
+                @toggleSelectRoom="toggleSelectRoom"
+                @toggleSelectFriend="toggleSelectFriend"
+                :listFriend="listFriend"
+                :listRoom="listRoom"
                 :ref="currentTab"
               ></component>
             </keep-alive>
@@ -56,7 +58,7 @@
             alt="icon-group"
             class="icon-group"
           />
-          <span>ROOM NAME</span>
+          <span>Username: {{ this.chosenFriend.username }}</span>
           <hr />
         </div>
         <div
@@ -66,7 +68,7 @@
           <Conservation
             ref="conversation"
             :conversation="conversation"
-			:socket="this.socket"
+            :socket="this.socket"
           ></Conservation>
         </div>
         <div id="input-message" class="input-message position-fixed">
@@ -75,7 +77,7 @@
               class="form-control custom-control textarea-send-message"
               rows="1"
               style="resize:none"
-              v-model="post.content"
+              v-model="post.message"
               v-on:keyup.enter="sendPost"
             ></textarea>
             <span class="btn-send-message">
@@ -98,6 +100,7 @@
   </div>
 </template>
 <script>
+import api from "../api/service.api";
 import ListRoom from "../components/room/ListRoom";
 import ListFriend from "../components/room/ListFriend";
 import Conservation from "../components/room/Conversation";
@@ -105,13 +108,25 @@ import $ from "jquery";
 
 export default {
   name: "Home",
-  props:["socket"],
+  props: ["socket"],
   components: {
     ListRoom,
     ListFriend,
     Conservation
   },
-  mounted() {
+  async mounted() {
+    await this.getListFriend();
+    await this.getListRoom();
+    await this.getCurrentUser();
+    this.socket.on("receivedNewMessage", data => {
+      this.post.message = data.message;
+      this.post.isSend = false;
+      this.$refs.conversation.updateConversation(this.post);
+      this.post.message = "";
+    });
+    this.socket.emit("userOnline", {
+      id: localStorage.getItem("userID")
+    });
     this.setScrollHeight(window.innerHeight);
   },
   data() {
@@ -119,10 +134,9 @@ export default {
       tabs: ["ListFriend", "ListRoom"],
       currentTab: "ListFriend",
       post: {
-        content: "",
-        user: "user 0",
-        date: "2019-29-11",
-        roomId: "1"
+        message: "",
+        roomId: "1",
+        isSend: true
       },
       conversation: {
         name: "",
@@ -130,7 +144,12 @@ export default {
         type: 0,
         content: []
       },
-      isLoadingConversation: false
+      listRoom: [],
+      listFriend: [],
+      isLoadingConversation: false,
+      chosenFriend: {},
+      chosenRoom: {},
+      currentUser: {}
     };
   },
   methods: {
@@ -148,29 +167,74 @@ export default {
         heightScrollbarListConversation + "px"
       );
     },
+    socketListerners() {},
     sendPost(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
-        if (this.post.content !== "") {
-          if (this.$refs.conversation.updateConversation(this.post)) {
-            this.resetPost();
-          }
+        if (this.post.message !== "") {
+          this.post.isSend = true;
+          this.$refs.conversation.updateConversation(this.post);
+          this.socket.emit("newMessage", {
+            created_by: this.userInfo._id,
+            to_username: this.chosenFriend._id,
+            message: this.post.message,
+            room: null
+          });
+          this.resetPost();
         }
       }
     },
     resetPost() {
-      this.post.content = "";
+      this.post.message = "";
       setTimeout(function() {
         $("#scrollbar-list-conversation").scrollTop(10000);
       }, 100);
     },
-    async prepareForConversation(data) {
-      this.isLoadingConversation = true;
-      //call api using await
-      this.conversation.type = data.type;
-      this.conversation.name = data.conversation.name;
-      this.conversation.icon = data.conversation.icon;
-      this.conversation.content = data.conversation.content;
-      return false;
+    toggleSelectFriend(friend) {
+      this.chosenFriend = friend;
+    },
+    toggleSelectRoom(room) {
+      this.chosenRoom = room;
+    },
+    // get List friend
+    async getListFriend(currentUser) {
+      return await api
+        .getAllUsers(currentUser)
+        .then(async res => {
+          if (res.status === 200) {
+            this.listFriend = res.data.users;
+            this.chosenFriend = this.listFriend[0];
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // get list room
+    async getListRoom(currentUser) {
+      return await api
+        .getAllRooms(currentUser)
+        .then(async res => {
+          if (res.status === 200) {
+            this.listRoom = res.data.rooms;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          console.log("GET listRoom Fail!");
+        });
+    },
+    // get current user
+    async getCurrentUser() {
+      return await api
+        .getCurrentUser()
+        .then(async res => {
+          if (res.status === 200) {
+            this.userInfo = res.data.user;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };

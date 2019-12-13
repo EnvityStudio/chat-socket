@@ -21,6 +21,9 @@ var create = function (data, callback) {
 var findOne = function (data, callback) {
     userModel.findOne(data, callback);
 }
+var getUser  = function(data, callback){
+	userModel.findOne(data,callback).select('-password');
+}
 /**
  * 
  * @param {*} id 
@@ -41,12 +44,13 @@ var findOrCreate = function (data, callback) {
 }
 
 var find = function (data, callback) {
-    userModel.find(data, callback);
+    userModel.find(data, callback).select('-password');
 }
 module.exports = {
     create,
     findOne,
     findById,
     findOrCreate,
-    find
+	find,
+	getUser
 };

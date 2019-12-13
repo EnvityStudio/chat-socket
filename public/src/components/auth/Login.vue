@@ -32,7 +32,7 @@
           <div class="form-group">
             <span>Don't have an account? </span>
             <router-link :to="{ name: 'Register' }">Sign up</router-link>
-            <span> here</span>
+            <div>{{ this.errorMessage }}</div>
           </div>
         </form>
       </div>
@@ -46,7 +46,7 @@ import setAuthToken from "../../utils/authToken";
 
 export default {
   name: "Login",
-  props: { message: String },
+  props: ["message"],
   components: {},
   data: function() {
     return {
@@ -70,10 +70,8 @@ export default {
         return await api
           .loginUser({ username: this.username, password: this.password })
           .then(async res => {
-            console.log(JSON.stringify(res));
             if (res.data.errors) {
               console.log("Login errors");
-              console.log(JSON.stringify(res.data.errors));
               for (const error of res.data.errors) {
                 const [key] = Object.keys[error];
                 const [value] = Object.values[error];
@@ -81,8 +79,11 @@ export default {
               }
             } else {
               localStorage.setItem("authToken", res.data.token);
+              localStorage.setItem("userID", res.data.user._id);
               setAuthToken(res.data.token);
-              this.$router.push({ name: "Home" });
+              this.$router.push({
+                name: "Home"
+              });
             }
           })
           .catch(error => {
