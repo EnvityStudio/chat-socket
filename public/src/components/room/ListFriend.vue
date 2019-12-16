@@ -2,14 +2,19 @@
   <div class="page list-room">
     <table class="table-full-width">
       <tbody>
-        <tr v-for="(friend, index) in listFriend" :key="index">
+        <tr
+          v-for="(friend, index) in listFriend"
+          :key="index"
+          :class="[friend.class]"
+        >
           <td>
             <button
               type="button"
               class="btn btn-light btn-block btn-friend-in-list"
-              @click="toggleSelectFriend(friend)"
+              @click="toggleSelectFriend(friend, index)"
             >
-              <div style = "width: 100%">
+              <div style="width: 100%">
+                <a>{{ friend.class.active }}</a>
                 <div style="float: left">
                   <img
                     src="../../assets/icon_user.png"
@@ -20,6 +25,13 @@
                 </div>
                 <div style="float: left">
                   <img
+                    v-if="friend.class.active === true"
+                    src="../../assets/isOnline.png"
+                    alt="friend.class.active"
+                    class="icon-friend-online-offline"
+                  />
+                  <img
+                    v-else-if="friend.class.active === false"
                     src="../../assets/isOffline.png"
                     alt="icon-room"
                     class="icon-friend-online-offline"
@@ -48,9 +60,10 @@ export default {
     // this.getListFriend();
   },
   methods: {
-    toggleSelectFriend(friend) {
+    toggleSelectFriend(friend, index) {
+      //console.log("indexxxxxxxx: " + index);
       //call API to get content
-      this.$emit("toggleSelectFriend", friend);
+      this.$emit("toggleSelectFriend", { friend: friend, index: index });
     }
   }
 };

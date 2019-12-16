@@ -44,7 +44,7 @@ var findOrCreate = function (data, callback) {
 }
 
 var find = function (data, callback) {
-    userModel.find(data, callback).select('-password');
+    userModel.find(data, callback).select('-password').lean().exec();
 }
 module.exports = {
     create,

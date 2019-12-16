@@ -115,18 +115,44 @@ export default {
     Conservation
   },
   async mounted() {
+    await this.getCurrentUser();
     await this.getListFriend();
     await this.getListRoom();
-    await this.getCurrentUser();
+    ///
     this.socket.on("receivedNewMessage", data => {
       this.post.message = data.message;
       this.post.isSend = false;
       this.$refs.conversation.updateConversation(this.post);
       this.post.message = "";
     });
+    ///
     this.socket.emit("userOnline", {
       id: localStorage.getItem("userID")
     });
+    ////
+    this.socket.on("aUserOnline", data => {
+      console.log("aUserOnline");
+      console.log(data.id);
+      this.listFriend.map(friend => {
+        if (friend._id === data.id) {
+          friend.class["active"] = "online";
+          return friend;
+        }
+      });
+      console.log(JSON.stringify(this.listFriend));
+    });
+    // ////
+    this.socket.on("aUserDisconnect", data => {
+      this.listFriend.map(friend => {
+        if (friend._id === data.id) {
+          friend.class["active"] = "offfline";
+          return friend;
+        }
+      });
+      console.log("aUserDisconnect");
+      console.log(JSON.stringify(this.listFriend));
+    });
+    ////
     this.setScrollHeight(window.innerHeight);
   },
   data() {
@@ -149,7 +175,8 @@ export default {
       isLoadingConversation: false,
       chosenFriend: {},
       chosenRoom: {},
-      currentUser: {}
+      currentUser: {},
+      selectedFriendIndex: -1
     };
   },
   methods: {
@@ -189,8 +216,15 @@ export default {
         $("#scrollbar-list-conversation").scrollTop(10000);
       }, 100);
     },
-    toggleSelectFriend(friend) {
-      this.chosenFriend = friend;
+    toggleSelectFriend(data) {
+      console.log(data);
+      //   this.listFriend[index]
+      this.listFriend.forEach(friend => {
+        friend.class.selected = false;
+      });
+      console.log(this.listFriend[data.index]);
+      this.listFriend[0].class.selected = true;
+      console.log(JSON.stringify(this.listFriend));
     },
     toggleSelectRoom(room) {
       this.chosenRoom = room;
@@ -202,6 +236,14 @@ export default {
         .then(async res => {
           if (res.status === 200) {
             this.listFriend = res.data.users;
+            //
+            let listClass = { selected: false };
+
+            //
+            this.listFriend.map(friend => {
+              friend["class"] = listClass;
+            });
+            console.log(JSON.stringify(this.listFriend));
             this.chosenFriend = this.listFriend[0];
           }
         })

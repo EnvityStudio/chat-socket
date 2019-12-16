@@ -9,13 +9,15 @@ const { ADD_MESSAGE } = require('../actions/socketio');
  * Encapsulates all code for emitting and listening to socket events 
  */
 let userTypings = {};
-var clientConnects = [];
+var clientConnects = {};
 var ioEvents = function (io) {
 	io.on('connection', function (socket) {
 		/** User login successfully */
 		socket.on('userOnline', data => {
-			clientConnects.push({ socketID: socket.id, userID: data.id });
+			clientConnects[socket.id] = data.id;
 			socket.join(data.id);
+			// send to all user when a user is online 
+			socket.broadcast.emit('aUserOnline', { id: data.id });
 		});
 		/** User typing Events */
 		socket.on('userTyping', data => {
@@ -23,6 +25,7 @@ var ioEvents = function (io) {
 		});
 		/** New Message Event */
 		socket.on('newMessage', async data => {
+			// when a new message arrives
 			const newMessage = await ADD_MESSAGE(data);
 			// Emit data back to the client for display 
 			socket.broadcast.to(data.to_username).emit('receivedNewMessage', newMessage);
@@ -33,12 +36,13 @@ var ioEvents = function (io) {
 		/** Room Updated Event */
 		/** Reconnected: Update Reconnected User in Room */
 
-		// when socket is exits
+		// when socket is exits => delete a connection
 		socket.on('disconnect', function () {
-			clientConnects = clientConnects.filter((user) => {
-				return user.socketID !== socket.id;
-			});
 			console.log("socket is disconnect");
+			// send to all user when a user is disconnect
+			socket.broadcast.emit('aUserDisconnect', { id: clientConnects[socket.id] });
+			// delete
+			delete clientConnects[socket.id];
 		});
 	});
 

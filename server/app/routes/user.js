@@ -28,7 +28,7 @@ router.get('/getAllUsers', checkToken, (req, res) => {
 router.get('/getCurrentUser', checkToken, (req, res) => {
 	User.getUser((err, user) => {
 		if (err) throw err;
-		res.status(200).send({user});
+		res.status(200).send({ user });
 	});
 })
 //

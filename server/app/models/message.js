@@ -9,7 +9,6 @@ var logger = require('../logger');
  * @param callback
  */
 var create = function (data) {
-	logger.info("Create New Message");
 	var newMessage = new messageModel(data);
 	newMessage.save()
 	return messageModel.populate(newMessage, [{ path: 'user', select: ['username', 'email'] }
