@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import api from "../../api/service.api";
+
 export default {
   name: "ListRoom",
   props: ["message", "listRoom"],

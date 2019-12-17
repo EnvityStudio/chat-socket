@@ -178,8 +178,8 @@ export default {
     /* eslint-disable */
 
     listFriend: function(data) {
-      console.log("watch aaaa");
-      console.log(data);
+      // console.log("watch aaaa");
+      // console.log(data);
       immediate: true;
     }
     /* eslint-enable */
