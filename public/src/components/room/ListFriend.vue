@@ -14,7 +14,7 @@
               @click="toggleSelectFriend(friend, index)"
             >
               <div style="width: 100%">
-                <a>{{ friend.class.active }}</a>
+                <a>s{{ friend.class["active"] }}</a>
                 <div style="float: left">
                   <img
                     src="../../assets/icon_user.png"
@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     toggleSelectFriend(friend, index) {
-      //console.log("indexxxxxxxx: " + index);
       //call API to get content
       this.$emit("toggleSelectFriend", { friend: friend, index: index });
     }

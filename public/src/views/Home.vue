@@ -114,7 +114,7 @@ export default {
     ListFriend,
     Conservation
   },
-  async mounted() {
+  async created() {
     await this.getCurrentUser();
     await this.getListFriend();
     await this.getListRoom();
@@ -131,26 +131,21 @@ export default {
     });
     ////
     this.socket.on("aUserOnline", data => {
-      console.log("aUserOnline");
-      console.log(data.id);
       this.listFriend.map(friend => {
         if (friend._id === data.id) {
-          friend.class["active"] = "online";
+          friend.class["active"] = true;
           return friend;
         }
       });
-      console.log(JSON.stringify(this.listFriend));
     });
     // ////
     this.socket.on("aUserDisconnect", data => {
       this.listFriend.map(friend => {
         if (friend._id === data.id) {
-          friend.class["active"] = "offfline";
+          friend.class["active"] = false;
           return friend;
         }
       });
-      console.log("aUserDisconnect");
-      console.log(JSON.stringify(this.listFriend));
     });
     ////
     this.setScrollHeight(window.innerHeight);
@@ -178,6 +173,16 @@ export default {
       currentUser: {},
       selectedFriendIndex: -1
     };
+  },
+  watch: {
+    /* eslint-disable */
+
+    listFriend: function(data) {
+      console.log("watch aaaa");
+      console.log(data);
+      immediate: true;
+    }
+    /* eslint-enable */
   },
   methods: {
     setScrollHeight(screenHeight) {
@@ -217,14 +222,17 @@ export default {
       }, 100);
     },
     toggleSelectFriend(data) {
-      console.log(data);
-      //   this.listFriend[index]
-      this.listFriend.forEach(friend => {
-        friend.class.selected = false;
+      // (1)
+      this.listFriend.map(friend => {
+        if (friend._id === data.friend._id) {
+          friend.class["selected"] = true;
+        } else {
+          friend.class["selected"] = false;
+        }
+        return friend;
       });
-      console.log(this.listFriend[data.index]);
-      this.listFriend[0].class.selected = true;
-      console.log(JSON.stringify(this.listFriend));
+      // (2)
+      this.chosenFriend = this.listFriend[data.index];
     },
     toggleSelectRoom(room) {
       this.chosenRoom = room;
@@ -236,14 +244,12 @@ export default {
         .then(async res => {
           if (res.status === 200) {
             this.listFriend = res.data.users;
-            //
-            let listClass = { selected: false };
 
-            //
             this.listFriend.map(friend => {
+              let listClass = { selected: false, active: false };
               friend["class"] = listClass;
+              return friend;
             });
-            console.log(JSON.stringify(this.listFriend));
             this.chosenFriend = this.listFriend[0];
           }
         })
