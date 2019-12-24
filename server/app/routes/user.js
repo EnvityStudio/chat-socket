@@ -5,6 +5,7 @@
 const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 var User = require('../models/user');
 
 /** Middleware */
@@ -14,7 +15,7 @@ const { checkLoginFields, createErrorObject, checkToken } = require('../middlewa
 /**
  * @description /api/user/getAllUsers
  */
-router.get('/getAllUsers', checkToken, (req, res) => {
+router.get('/getAllUsers', passport.authenticate('jwt', { session: false }), (req, res) => {
 	User.find(function (err, users) {
 		if (err) throw err;
 		console.log("getAllUser successfully !!!");
@@ -25,12 +26,9 @@ router.get('/getAllUsers', checkToken, (req, res) => {
 /**
  * @description /api/user/getCurrentUser
  */
-router.get('/getCurrentUser', checkToken, (req, res) => {
-	User.getUser((err, user) => {
-		if (err) throw err;
-		res.status(200).send({ user });
-	});
-})
+router.get('/getCurrentUser', passport.authenticate('jwt', { session: false }), (req, res) => {
+	res.status(200).send(req.user);
+});
 //
 
 module.exports = router;

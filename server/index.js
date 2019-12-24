@@ -18,12 +18,17 @@ var cors = require('cors')
 var ioServer = require('./app/socket')(app);
 var logger = require('./app/logger');
 
+/** Passport Configuration */
+const passport = require('passport');
+require('./app/config/passport')(passport);
 
 // Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(cors());
+app.use(passport.initialize());
+
 /** Dotenv Environment Variables */
 require('dotenv').config();
 
@@ -31,7 +36,7 @@ require('dotenv').config();
 const authRouters = require('./app/routes/auth.js');
 const roomRouters = require('./app/routes/room.js');
 const userRouters = require('./app/routes/user.js');
-
+const messageRouters = require('./app/routes/messages.js');
 
 
 /** Router Definition */
@@ -40,6 +45,8 @@ app.use('/api/auth', authRouters);
 app.use('/api/room', roomRouters);
 
 app.use('/api/user', userRouters);
+
+app.use('/api/message', messageRouters);
 
 /** Handing wrong url */
 app.get('/*', function (req, res) {

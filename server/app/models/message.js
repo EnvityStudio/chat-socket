@@ -18,8 +18,8 @@ var findById = function (id, callback) {
 	messageModel.findById(id, callback);
 }
 
-var find = function (data, callback) {
-	messageModel.find(data, callback);
+var find = function (data) {
+	return messageModel.find(data).populate('user', ['username']).exec();
 }
 
 

@@ -20,6 +20,7 @@ const { checkLoginFields, createErrorObject } = require('../middleware/authentic
  * @access public 
  */
 router.post('/login', checkLoginFields, (req, res) => {
+	console.log("login");
 	User.getUser({ username: req.body.username }, function (err, user) {
 		if (err) throw err;
 		if (!user) {
@@ -77,7 +78,7 @@ router.post('/register', async (req, res) => {
 					});
 				}
 				const user = _.omit(userData.toObject(), ['password']);
-				const token = jwt.sign(user, "secret", {
+				const token = jwt.sign(user, process.env.JWT_SECRET, {
 					expiresIn: 1800000
 				});
 

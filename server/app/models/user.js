@@ -30,7 +30,7 @@ var getUser  = function(data, callback){
  * @param {*} callback 
  */
 var findById = function (id, callback) {
-    userModel.findById(id, callback);
+    userModel.findById(id, callback).select('-password');
 }
 
 var findOrCreate = function (data, callback) {
