@@ -10,33 +10,25 @@
           <td>
             <button
               type="button"
-              class="btn btn-light btn-block btn-friend-in-list"
+              class="btn btn-light btn-block btn-friend-in-list button-container"
               @click="toggleSelectFriend(friend, index)"
             >
-              <div style="width: 100%">
-                <a>s{{ friend.class["active"] }}</a>
-                <div style="float: left">
-                  <img
-                    src="../../assets/icon_user.png"
-                    alt="icon-room"
-                    class="icon-friend-in-list"
-                  />
-                  <span>{{ friend.username }}</span>
-                </div>
-                <div style="float: left">
-                  <img
-                    v-if="friend.class.active === true"
-                    src="../../assets/isOnline.png"
-                    alt="friend.class.active"
-                    class="icon-friend-online-offline"
-                  />
-                  <img
-                    v-else-if="friend.class.active === false"
-                    src="../../assets/isOffline.png"
-                    alt="icon-room"
-                    class="icon-friend-online-offline"
-                  />
-                </div>
+              <div class="div-img-content">
+                  <div class="d-flex justify-content-center ada">
+                    <div class="image_outer_container">
+                      <div v-bind:class="[(friend.class.active === true) ? 'green_icon' : 'gray_icon']"></div>
+                      <div class="image_inner_container">
+                        <img
+                            src="../../assets/icon_user.png"
+                            alt="icon-room"
+                            class="icon-friend-in-list"
+                        />
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="div-span-content">
+                <span>{{ friend.username }}</span>
               </div>
             </button>
           </td>
@@ -84,5 +76,60 @@ export default {
 }
 .btn-friend-in-list {
   text-align: left;
+}
+.image_outer_container{
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 50%;
+  position: relative;
+}
+
+.image_inner_container{
+  border-radius: 50%;
+  background: #833ab4;
+  background: -webkit-linear-gradient(to bottom, #fcb045, #fd1d1d, #833ab4);
+  background: linear-gradient(to bottom, #fcb045, #fd1d1d, #833ab4);
+}
+.image_inner_container img{
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.image_outer_container .green_icon{
+  background-color: #4cd137;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  width: 20px;
+  border:1px solid white;
+  border-radius: 50%;
+}
+
+.image_outer_container .gray_icon{
+  background-color: #818182;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  width: 20px;
+  border:1px solid white;
+  border-radius: 50%;
+}
+
+.button-container{
+  clear: both;
+}
+
+.div-img-content{
+  float: left;
+  margin-right: 10px;
+}
+
+.div-span-content{
+  float: left;
+  margin-top: 15px;
 }
 </style>

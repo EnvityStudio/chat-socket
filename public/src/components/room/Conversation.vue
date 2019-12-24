@@ -4,24 +4,18 @@
       v-for="(mess, index) in listMessage"
       :key="index"
       class="div-content-message"
+      :class="[mess.user === 'user 0' ? 'div-content-message-right' : '']"
     >
       <img
         src="../../assets/icon_user.png"
         alt="icon-user-conversation"
         class="navbar-toggler-icon img-icon-user-conversation"
-        :class="[
-          mess.created_by === idCurrentUser
-            ? 'img-icon-user-conversation-right'
-            : ''
-        ]"
+        :class="[mess.isSend ? 'img-icon-user-conversation-right' : '']"
       />
-      <div></div>
       <span
         class="span-content-message"
-        :class="[
-          mess.created_by === idCurrentUser ? 'span-content-message-right' : ''
-        ]"
-        >{{ mess.message }}</span
+        :class="[mess.isSend ? 'span-content-message-right' : '']"
+        >{{ mess.content }}</span
       >
     </div>
   </div>
@@ -47,21 +41,19 @@ export default {
   },
   data() {
     return {
-      listMessage: [],
-      idCurrentUser: localStorage.getItem("userID")
+      listMessage: []
     };
   },
   methods: {
-    addMessage(newPost) {
-      this.listMessage.push(
-        newPost
-      );
-      console.log("addMessage");
-      console.log(this.listMessage);
-    },
-    updateConversation(listMessage) {
-      this.listMessage = listMessage;
-    }
+    updateConversation(newPost) {
+      this.listMessage.push({
+        id: "",
+        content: newPost.message,
+        date: newPost.date,
+        user: newPost.user,
+        isSend: newPost.isSend
+      });
+	}
   }
 };
 </script>
