@@ -77,7 +77,7 @@
               class="form-control custom-control textarea-send-message"
               rows="1"
               style="resize:none"
-              v-model="post.message"
+              v-model="message"
               v-on:keyup.enter="sendPost"
             ></textarea>
             <span class="btn-send-message">
@@ -120,10 +120,8 @@ export default {
     await this.getListRoom();
     ///
     this.socket.on("receivedNewMessage", data => {
-      this.post.message = data.message;
-      this.post.isSend = false;
-      this.$refs.conversation.updateConversation(this.post);
-      this.post.message = "";
+      this.post = data;
+      this.$refs.conversation.addMessage(this.post);
     });
     ///
     this.socket.emit("userOnline", {
@@ -154,11 +152,8 @@ export default {
     return {
       tabs: ["ListFriend", "ListRoom"],
       currentTab: "ListFriend",
-      post: {
-        message: "",
-        roomId: "1",
-        isSend: true
-      },
+      message: "",
+      userInfo: {},
       conversation: {
         name: "",
         icon: "",
@@ -178,7 +173,6 @@ export default {
     /* eslint-disable */
 
     listFriend: function(data) {
-      console.log("watch aaaa");
       console.log(data);
       immediate: true;
     }
@@ -202,26 +196,25 @@ export default {
     socketListerners() {},
     sendPost(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
-        if (this.post.message !== "") {
-          this.post.isSend = true;
-          this.$refs.conversation.updateConversation(this.post);
-          this.socket.emit("newMessage", {
-            created_by: this.userInfo._id,
-            to_username: this.chosenFriend._id,
-            message: this.post.message,
-            room: null
-          });
-          this.resetPost();
-        }
+        console.log("created_by: " + this.userInfo._id);
+        let data = {
+          created_by: this.userInfo._id,
+          to_username: this.chosenFriend._id,
+          message: this.message,
+          room: null
+        };
+        this.$refs.conversation.addMessage(data);
+        this.socket.emit("newMessage", data);
+        this.resetPost();
       }
     },
     resetPost() {
-      this.post.message = "";
+      this.message = "";
       setTimeout(function() {
         $("#scrollbar-list-conversation").scrollTop(10000);
       }, 100);
     },
-    toggleSelectFriend(data) {
+    async toggleSelectFriend(data) {
       // (1)
       this.listFriend.map(friend => {
         if (friend._id === data.friend._id) {
@@ -233,6 +226,19 @@ export default {
       });
       // (2)
       this.chosenFriend = this.listFriend[data.index];
+      // (3) update message
+      await api
+        .getMessage({ id: this.listFriend[data.index]._id })
+        .then(async res => {
+          if (res.status === 200) {
+            console.log("aaaaaaaaaa");
+            console.log(res.data);
+            this.$refs.conversation.updateConversation(res.data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     toggleSelectRoom(room) {
       this.chosenRoom = room;
@@ -277,7 +283,7 @@ export default {
         .getCurrentUser()
         .then(async res => {
           if (res.status === 200) {
-            this.userInfo = res.data.user;
+            this.userInfo = res.data;
           }
         })
         .catch(error => {
