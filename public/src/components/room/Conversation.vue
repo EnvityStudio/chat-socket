@@ -10,12 +10,18 @@
         src="../../assets/icon_user.png"
         alt="icon-user-conversation"
         class="navbar-toggler-icon img-icon-user-conversation"
-        :class="[mess.isSend ? 'img-icon-user-conversation-right' : '']"
+        :class="[
+          mess.created_by === idCurrentUser
+            ? 'img-icon-user-conversation-right'
+            : ''
+        ]"
       />
       <span
         class="span-content-message"
-        :class="[mess.isSend ? 'span-content-message-right' : '']"
-        >{{ mess.content }}</span
+        :class="[
+          mess.created_by === idCurrentUser ? 'span-content-message-right' : ''
+        ]"
+        >{{ mess.message }}</span
       >
     </div>
   </div>
@@ -25,35 +31,23 @@
 export default {
   name: "Conversation",
   props: {
-    conversation: {
-      type: Object,
-      required: true,
-      default: function() {
-        return {
-          name: "",
-          icon: "",
-          type: 0,
-          content: []
-        };
-      }
-    },
     socket: { required: true }
   },
   data() {
     return {
-      listMessage: []
+      listMessage: [],
+      idCurrentUser: localStorage.getItem("userID")
     };
   },
   methods: {
-    updateConversation(newPost) {
-      this.listMessage.push({
-        id: "",
-        content: newPost.message,
-        date: newPost.date,
-        user: newPost.user,
-        isSend: newPost.isSend
-      });
-	}
+    addMessage(newPost) {
+      this.listMessage.push(newPost);
+      console.log("addMessage");
+      console.log(this.listMessage);
+    },
+    updateConversation(listMessage) {
+      this.listMessage = listMessage;
+    }
   }
 };
 </script>

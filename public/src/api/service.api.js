@@ -48,6 +48,13 @@ export default {
             url: `${URL_SERVER}/room/createRoom`,
             data: data
         });
+	},
+	getMessage: async function (params) {
+		return axios({
+			method: "GET",
+			url: `${URL_SERVER}/message/${params.id}`,
+			params: params
+		});
 	}
 	
 }
