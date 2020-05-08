@@ -12,7 +12,9 @@ import 'bootstrap/js/dist/tooltip'
 import 'bootstrap/scss/bootstrap.scss'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// import './assets/css/bower_components/emojionearea/dist'
+// import './assets/css/bower_components/emojionearea/dist'
 
 Vue.use(BootstrapVue);
 
@@ -48,12 +50,12 @@ axios.interceptors.response.use(
 	function (response) {
 		return response;
 	},
-	function (err){
-		if(err.response.status === 401){
+	function (err) {
+		if (err.response.status === 401) {
 			localStorage.removeItem('authToken');
 			router.push({
 				name: 'Login',
-				params: {message: 'Session has expried, please login again'}
+				params: { message: 'Session has expried, please login again' }
 			});
 		}
 	}

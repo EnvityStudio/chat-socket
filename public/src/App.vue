@@ -12,11 +12,12 @@ export default {
     return {
       rooms: [],
       nameroom: "",
-      socket: null
+      socket: null,
+      url_socket: process.env.VUE_APP_URL_SOCKET,
     };
   },
   created() {
-    this.socket = io("http://172.16.110.138:3000");
+    this.socket = io(this.url_socket);
     this.socket.on("connect", () => {
       this.connect();
     });
@@ -25,8 +26,8 @@ export default {
     document.body.style.overflowY = "hidden";
   },
   methods: {
-    connect() {}
-  }
+    connect() {},
+  },
 };
 </script>
 <style lang="scss">

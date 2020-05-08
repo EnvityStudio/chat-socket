@@ -7,6 +7,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import Page from './views/Page';
 Vue.use(Router);
 
 const router = new Router({
@@ -63,6 +64,15 @@ const router = new Router({
 		{
 			path: '*',
 			component: () => import('@/components/error/Error.vue')
+		},
+		{
+			path: '/page',
+			name: 'page',
+			component: Page,
+			props: true,
+			meta: {
+				requiresAuth: false
+			}
 		}
 	]
 });

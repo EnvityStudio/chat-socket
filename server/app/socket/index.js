@@ -14,10 +14,15 @@ var ioEvents = function (io) {
 	io.on('connection', function (socket) {
 		/** User login successfully */
 		socket.on('userOnline', data => {
+			console.log("user Onlineeeeeeee");
 			clientConnects[socket.id] = data.id;
 			socket.join(data.id);
-			// send to all user when a user is online 
+			// send to all user except sender when a user is online 
 			socket.broadcast.emit('aUserOnline', { id: data.id });
+			//send a list user online 
+			socket.broadcast.to(data.id).emit("listUserOnline", clientConnects);
+			// sending to all clients, include sender
+			// io.emit('message', "this is a test");
 		});
 		/** User typing Events */
 		socket.on('userTyping', data => {

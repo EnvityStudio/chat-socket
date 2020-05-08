@@ -22,6 +22,9 @@ var messageSchema = new Mongoose.Schema({
 		required: true,
 		trim: true
 	},
+	file:{
+		type: Buffer
+	},
 	room: {
 		type: Mongoose.Schema.Types.ObjectId, 
 		ref: 'room' 

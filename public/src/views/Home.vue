@@ -42,6 +42,7 @@
                 :is="currentTab"
                 @toggleSelectRoom="toggleSelectRoom"
                 @toggleSelectFriend="toggleSelectFriend"
+				@setScrollToBottom="setScrollToBottom"
                 :listFriend="listFriend"
                 :listRoom="listRoom"
                 :ref="currentTab"
@@ -125,12 +126,12 @@ export default {
     });
     ////
     this.socket.on("aUserOnline", data => {
-      this.listFriend.map(friend => {
-        if (friend._id === data.id) {
-          friend.class["active"] = true;
-          return friend;
-        }
+      let friendIndex = this.listFriend.findIndex(f => {
+        return f._id === data.id;
       });
+      let friend = this.listFriend[friendIndex];
+      friend.class["active"] = true;
+      this.$refs.ListFriend.updateListFriend(this.listFriend);
     });
     // ////
     this.socket.on("aUserDisconnect", data => {
@@ -163,8 +164,7 @@ export default {
     /* eslint-disable */
 
     listFriend: function(data) {
-      // console.log("watch aaaa");
-      // console.log(data);
+     
       immediate: true;
     }
     /* eslint-enable */
@@ -187,7 +187,7 @@ export default {
     socketListerners() {},
     sendPost(e) {
       if (e.keyCode === 13 && !e.shiftKey) {
-        if (this.post.message !== "") {
+        if (this.message !== "") {
           console.log("created_by: " + this.userInfo._id);
           let data = {
             created_by: this.userInfo._id,
@@ -203,10 +203,14 @@ export default {
     },
     resetPost() {
       this.message = "";
-      setTimeout(function() {
+      this.setScrollToBottom();
+	},
+	setScrollToBottom(){
+		console.log("setscrollllllllllll");
+		setTimeout(function() {
         $("#scrollbar-list-conversation").scrollTop(10000);
       }, 100);
-    },
+	},
     async toggleSelectFriend(data) {
       // (1)
       this.listFriend.map(friend => {

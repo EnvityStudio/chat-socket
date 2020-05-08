@@ -33,6 +33,12 @@ export default {
   props: {
     socket: { required: true }
   },
+  watch: {
+    listMessage: function() {
+		
+      this.$emit("setScrollToBottom");
+    }
+  },
   data() {
     return {
       listMessage: [],

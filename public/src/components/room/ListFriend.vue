@@ -13,6 +13,7 @@
               class="btn btn-light btn-block btn-friend-in-list button-container"
               @click="toggleSelectFriend(friend, index)"
             >
+			<div>{{friend.class.active }}</div>
               <div class="div-img-content">
                   <div class="d-flex justify-content-center ada">
                     <div class="image_outer_container">
@@ -55,7 +56,11 @@ export default {
     toggleSelectFriend(friend, index) {
       //call API to get content
       this.$emit("toggleSelectFriend", { friend: friend, index: index });
-    }
+	},
+	updateListFriend(listFriend){
+		console.log("upateeeeeeeeeeeeeeeeeee");
+		this.listFriend = listFriend
+	}
   }
 };
 </script>
